@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка товара - Котик</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .card h1 {
+            font-size: 32px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .card button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #2ecc71;
+            color: #fff;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button {
+            background: -moz-linear-gradient(#D0ECF4, #5BC9E1, #D0ECF4);
+            background: -webkit-gradient(linear, 0 0, 0 100%, from(#D0ECF4), to(#D0ECF4), color-stop(0.5, #5BC9E1));
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00BBD6', endColorstr='#EBFFFF');
+            padding: 3px 7px;
+            color: #333;
+            -moz-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            border: 1px solid #666;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="card">
+        <img src="https://via.placeholder.com/400x300" alt="Котик">
+        <h1>Котик</h1>
+        <p>Описание товара: какой-то текст про котика.</p>
+        <button>Изменить</button>
+    </div>
+    <form action="index.html"><button>На главную</button></form>
+    <script>
+        // location.search => ?n=v
+        console.log(location);
+        let id = location.search.split("=");
+        id = id[id.length - 1];
+        console.log(id);
+        const card = document.querySelector(".card");
+
+        let user = localStorage.getItem("cats"); // имя пользователя
+        if (!user) {
+            user = prompt("Ваше уникальное имя: ", "kykylin88");
+            localStorage.setItem("cats", user);
+        }
+
+        const path = `https://cats.petiteweb.dev/api/single/${user}`;
+
+        fetch(`${path}/show/${id}`)
+            .then(res => {
+                if (res.ok) {
+                    return res.json()
+                }
+            })
+            .then(data => {
+                card.querySelector("img").src = data.image;
+                card.querySelector("h1").textContent = data.name;
+                card.querySelector("p").textContent = data.description;
+            })
+    </script>
+</body>
+
+</html>
